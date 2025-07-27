@@ -1,15 +1,19 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Home, Handshake, CheckCircle, ChevronDown, Scan, Upload, Camera } from "lucide-react";
-import { useState } from "react";
+import { FileText, Home, Handshake, CheckCircle, ChevronDown, Upload, Camera } from "lucide-react";
+import { useState, useRef } from "react";
 
 const Services = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [isCameraActive, setIsCameraActive] = useState(false);
+  const [currentScanningDoc, setCurrentScanningDoc] = useState(null);
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
 
   const dropdownServices = [
-        {
+    {
       title: "MOD",
       icon: FileText,
-      color: "primary",
+      color: "primary", // All sections use same color
       documents: [
         "Aadhar card - loaner",
         "Aadhar card - 2 witness",
@@ -20,7 +24,7 @@ const Services = () => {
     {
       title: "MOD (Cancel)",
       icon: FileText,
-      color: "primary",
+      color: "primary", // Same color
       documents: [
         "Aadhar card - loaner",
         "Aadhar card - 2 witness",
@@ -31,7 +35,7 @@ const Services = () => {
     {
       title: "Sales",
       icon: Home,
-      color: "secondary", 
+      color: "primary", // Same color
       documents: [
         "Aadhar card – giver",
         "Aadhar card – getter",
@@ -44,7 +48,7 @@ const Services = () => {
     {
       title: "Settlement",
       icon: Handshake,
-      color: "accent",
+      color: "primary", // Same color
       documents: [
         "Aadhar card – giver",
         "Aadhar card – getter", 
@@ -57,48 +61,72 @@ const Services = () => {
   ];
 
   const getColorClasses = (color) => {
-    switch (color) {
-      case 'primary':
-        return {
-          bg: 'bg-blue-50',
-          text: 'text-blue-600',
-          border: 'border-blue-200',
-          hover: 'hover:bg-blue-100',
-          button: 'bg-blue-600 text-white hover:bg-blue-700'
-        };
-      case 'secondary':
-        return {
-          bg: 'bg-green-50',
-          text: 'text-green-600',
-          border: 'border-green-200',
-          hover: 'hover:bg-green-100',
-          button: 'bg-green-600 text-white hover:bg-green-700'
-        };
-      case 'accent':
-        return {
-          bg: 'bg-purple-50',
-          text: 'text-purple-600',
-          border: 'border-purple-200',
-          hover: 'hover:bg-purple-100',
-          button: 'bg-purple-600 text-white hover:bg-purple-700'
-        };
-      default:
-        return {
-          bg: 'bg-blue-50',
-          text: 'text-blue-600',
-          border: 'border-blue-200',
-          hover: 'hover:bg-blue-100',
-          button: 'bg-blue-600 text-white hover:bg-blue-700'
-        };
-    }
+    // All sections use the same blue color scheme
+    return {
+      bg: 'bg-blue-50',
+      text: 'text-blue-600',
+      border: 'border-blue-200',
+      hover: 'hover:bg-blue-100',
+      button: 'bg-blue-600 text-white hover:bg-blue-700'
+    };
   };
 
   const toggleDropdown = (index) => {
     setActiveDropdown(activeDropdown === index ? null : index);
   };
 
-  const handleScanDocument = (serviceName, docName) => {
-    alert(`Starting scan for: ${docName} (${serviceName})`);
+  const startCamera = async (serviceName, docName) => {
+    try {
+      setCurrentScanningDoc({ service: serviceName, document: docName });
+      setIsCameraActive(true);
+      
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { 
+          facingMode: 'environment' // Use back camera on mobile
+        } 
+      });
+      
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch (error) {
+      console.error('Error accessing camera:', error);
+      alert('Unable to access camera. Please check permissions.');
+    }
+  };
+
+  const capturePhoto = () => {
+    if (videoRef.current && canvasRef.current) {
+      const canvas = canvasRef.current;
+      const video = videoRef.current;
+      const context = canvas.getContext('2d');
+      
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      
+      // Convert to blob and handle the captured image
+      canvas.toBlob((blob) => {
+        if (blob && currentScanningDoc) {
+          const fileName = `${currentScanningDoc.service}_${currentScanningDoc.document}_${new Date().getTime()}.jpg`;
+          alert(`Document captured: ${fileName}`);
+          
+          // Here you can send the blob to your server or handle it as needed
+          console.log('Captured document:', blob);
+        }
+        stopCamera();
+      }, 'image/jpeg', 0.8);
+    }
+  };
+
+  const stopCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const tracks = videoRef.current.srcObject.getTracks();
+      tracks.forEach(track => track.stop());
+    }
+    setIsCameraActive(false);
+    setCurrentScanningDoc(null);
   };
 
   const handleUploadDocument = (serviceName, docName) => {
@@ -121,12 +149,57 @@ const Services = () => {
         {/* Header Section */}
         <div className="text-center mb-8 sm:mb-12 lg:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 lg:mb-6 px-2">
-            Document <span className="bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">Services</span>
+            Document <span className="bg-gradient-to-r from-blue-600 to-blue-600 bg-clip-text text-transparent">Services</span>
           </h2>
           <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4 sm:px-6 leading-relaxed">
             Select a service to view required documents. You can scan or upload documents directly for each requirement.
           </p>
         </div>
+
+        {/* Camera Modal */}
+        {isCameraActive && (
+          <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-lg p-4 w-full max-w-md">
+              <div className="text-center mb-4">
+                <h3 className="text-lg font-semibold">
+                  Scanning: {currentScanningDoc?.document}
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Service: {currentScanningDoc?.service}
+                </p>
+              </div>
+              
+              <div className="relative">
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  playsInline
+                  className="w-full h-64 object-cover rounded-lg bg-gray-200"
+                />
+                <canvas
+                  ref={canvasRef}
+                  className="hidden"
+                />
+              </div>
+              
+              <div className="flex gap-3 mt-4">
+                <button
+                  onClick={capturePhoto}
+                  className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  <Camera className="w-4 h-4 inline mr-2" />
+                  Capture
+                </button>
+                <button
+                  onClick={stopCamera}
+                  className="flex-1 bg-gray-600 text-white py-3 px-4 rounded-lg hover:bg-gray-700 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Services Cards */}
         <div className="max-w-5xl mx-auto">
@@ -191,7 +264,7 @@ const Services = () => {
                                 {/* Action Buttons */}
                                 <div className="flex gap-2 flex-shrink-0">
                                   <button 
-                                    onClick={() => handleScanDocument(service.title, doc)}
+                                    onClick={() => startCamera(service.title, doc)}
                                     className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg ${colors.button} transition-colors duration-200 text-xs sm:text-sm font-medium flex-1 sm:flex-none justify-center`}
                                   >
                                     <Camera className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -209,28 +282,6 @@ const Services = () => {
                             </div>
                           ))}
                         </div>
-
-                        {/* Bulk Actions */}
-                        {/* <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200">
-                          <h4 className="font-semibold text-gray-900 mb-3 sm:mb-4 text-base sm:text-lg">Bulk Actions:</h4>
-                          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                            <button className={`flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-3 rounded-lg ${colors.button} transition-all duration-300 hover:shadow-md hover:-translate-y-1 flex-1 sm:flex-none`}>
-                              <Scan className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-                              <div className="text-left flex-1 sm:flex-none">
-                                <div className="font-semibold text-sm">Scan All Documents</div>
-                                <div className="text-xs opacity-90 hidden sm:block">Batch scanning for {service.title}</div>
-                              </div>
-                            </button>
-                            
-                            <button className="flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-3 rounded-lg bg-gray-600 text-white hover:bg-gray-700 transition-all duration-300 hover:shadow-md hover:-translate-y-1 flex-1 sm:flex-none">
-                              <Upload className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-                              <div className="text-left flex-1 sm:flex-none">
-                                <div className="font-semibold text-sm">Upload Multiple Files</div>
-                                <div className="text-xs opacity-90 hidden sm:block">Select multiple documents</div>
-                              </div>
-                            </button>
-                          </div>
-                        </div> */}
                       </div>
                     </CardContent>
                   )}
@@ -242,16 +293,17 @@ const Services = () => {
 
         {/* Important Note */}
         <div className="mt-12 sm:mt-16 text-center px-2">
-          <Card className="max-w-2xl mx-auto border-0 bg-gradient-to-r from-blue-50 via-white to-green-50">
+          <Card className="max-w-2xl mx-auto border-0 bg-gradient-to-r from-blue-50 via-white to-blue-50">
             <CardContent className="p-4 sm:p-6 lg:p-8">
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">Document Guidelines</h3>
               <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-3 sm:mb-4">
-                Please ensure all documents are clear, legible, and valid. Our scanning system accepts images (JPG, PNG) and PDF files.
+                Please ensure all documents are clear, legible, and valid. Use the camera to scan documents or upload existing files.
               </p>
               <div className="text-xs sm:text-sm text-gray-500 text-left sm:text-center space-y-1">
-                <div>• Maximum file size: 10MB per document</div>
-                <div>• Supported formats: JPG, PNG, PDF</div>
+                <div>• Camera will use back camera for better quality</div>
+                <div>• Captured images are saved as high-quality JPEGs</div>
                 <div>• Ensure documents are well-lit and not blurry</div>
+                <div>• Upload supports JPG, PNG, PDF formats</div>
               </div>
             </CardContent>
           </Card>
