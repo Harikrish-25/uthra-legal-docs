@@ -28,7 +28,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="text-sm sm:text-base font-semibold text-foreground">Phone Number</h4>
-                    <p className="text-sm sm:text-base text-muted-foreground">+91 98765 43210</p>
+                    <p className="text-sm sm:text-base text-muted-foreground">+91 97902 72078</p>
                   </div>
                 </div>
               </CardContent>
@@ -42,7 +42,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="text-sm sm:text-base font-semibold text-foreground">Office Address</h4>
-                    <p className="text-sm sm:text-base text-muted-foreground">123 Main Road, Example City, Tamil Nadu</p>
+                    <p className="text-sm sm:text-base text-muted-foreground">Dr Moorthy Road, Kumbakonam, Tamil Nadu</p>
                   </div>
                 </div>
               </CardContent>
@@ -56,7 +56,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="text-sm sm:text-base font-semibold text-foreground">Business Hours</h4>
-                    <p className="text-sm sm:text-base text-muted-foreground">Mon - Sat: 9:00 AM - 6:00 PM</p>
+                    <p className="text-sm sm:text-base text-muted-foreground">Mon - Sat: 10:00 AM - 7:00 PM</p>
                   </div>
                 </div>
               </CardContent>
@@ -65,7 +65,7 @@ const Contact = () => {
             <div className="pt-4 sm:pt-6">
               <Button 
                 className="w-full sm:w-auto bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white px-6 sm:px-8 py-4 sm:py-6 text-sm sm:text-base rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-                onClick={() => window.location.href = 'tel:+919876543210'}
+                onClick={() => window.location.href = 'tel:+919790272078'}
               >
                 <Phone className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                 Call Now
@@ -84,9 +84,9 @@ const Contact = () => {
               </CardHeader>
               <CardContent className="p-0">
                 <div className="w-full h-64 sm:h-80 lg:h-96 bg-muted/30 flex items-center justify-center relative overflow-hidden rounded-b-lg">
-                  {/* Placeholder for Google Maps - Replace with actual embed */}
+                  {/* Google Maps Embed with actual location */}
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3920.1876519751643!2d77.0266!3d10.3553!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTDCsDIxJzE5LjEiTiA3N8KwMDEnMzUuOCJF!5e0!3m2!1sen!2sin!4v1635000000000!5m2!1sen!2sin"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.6744385193877!2d79.3859443!3d10.9675610!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTDCsDU4JzAzLjIiTiA3OcKwMjMnMTguNyJF!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
@@ -97,10 +97,28 @@ const Contact = () => {
                     title="Uthra Job Centre Location"
                   ></iframe>
                   
-                  {/* Overlay with office details */}
+                  {/* Overlay with office details and directions button */}
                   <div className="absolute bottom-2 sm:bottom-4 left-2 sm:left-4 right-2 sm:right-4 bg-white/95 backdrop-blur-sm rounded-lg p-3 sm:p-4 shadow-lg">
-                    <h4 className="text-sm sm:text-base font-semibold text-foreground">Uthra Job Centre</h4>
-                    <p className="text-xs sm:text-sm text-muted-foreground">123 Main Road, Example City, Tamil Nadu</p>
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <h4 className="text-sm sm:text-base font-semibold text-foreground">Uthra Job Centre</h4>
+                        <p className="text-xs sm:text-sm text-muted-foreground">Latitude: 10.967561°N, Longitude: 79.388533°E</p>
+                      </div>
+                      <Button
+                        size="sm"
+                        className="ml-2 bg-primary hover:bg-primary/90 text-white px-3 py-2 text-xs"
+                        onClick={() => {
+                          // Open Google Maps directions in new tab
+                          window.open(
+                            `https://www.google.com/maps/dir/?api=1&destination=10.967561,79.388533&travelmode=driving`,
+                            '_blank'
+                          );
+                        }}
+                      >
+                        <MapPin className="w-3 h-3 mr-1" />
+                        Directions
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </CardContent>

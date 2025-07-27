@@ -35,7 +35,7 @@ const Hero = () => {
             <div className="flex flex-wrap gap-2 sm:gap-4 justify-center lg:justify-start">
               <div className="flex items-center gap-1 sm:gap-2 bg-primary-light px-3 sm:px-4 py-2 rounded-full">
                 <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
-                <span className="text-xs sm:text-sm font-medium text-primary">MOD Services</span>
+                <span className="text-xs sm:text-sm font-medium text-primary">MOD & MOD(Cancel) Services</span>
               </div>
               <div className="flex items-center gap-1 sm:gap-2 bg-secondary-light px-3 sm:px-4 py-2 rounded-full">
                 <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-secondary" />
@@ -61,33 +61,17 @@ const Hero = () => {
           </div>
 
           {/* Hero Image */}
-          <div className="relative">
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-              <img 
-                src={heroImage} 
-                alt="Professional legal documentation services"
-                className="w-full h-auto object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
-            </div>
-            
-            {/* Floating Cards */}
-            <div className="absolute -top-4 -left-4 bg-white rounded-2xl p-4 shadow-lg animate-pulse">
-              <FileText className="w-8 h-8 text-primary" />
-            </div>
-            <div className="absolute -bottom-4 -right-4 bg-white rounded-2xl p-4 shadow-lg animate-pulse delay-300">
-              <Shield className="w-8 h-8 text-secondary" />
-            </div>
+          <div>
+            <img 
+              src={heroImage} 
+              alt="Professional legal documentation services"
+              className="w-full h-auto object-cover rounded-3xl shadow-2xl"
+            />
           </div>
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-primary rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-primary rounded-full mt-2 animate-pulse"></div>
-        </div>
-      </div>
+
     </section>
   );
 };

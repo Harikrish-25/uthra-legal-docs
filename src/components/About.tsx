@@ -34,7 +34,7 @@ const About = () => {
           </h2>
           <p className="text-base sm:text-lg lg:text-xl text-muted-foreground leading-relaxed px-4">
             Uthra Job Centre is a reliable and experienced office providing end-to-end documentation services 
-            for various legal transactions including MOD (Mortgage), Sale, and Settlement. We ensure hassle-free 
+            for various legal transactions including MOD & MOD(Cancellation), Sale, and Settlement. We ensure hassle-free 
             and accurate processing of your documents.
           </p>
         </div>

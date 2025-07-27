@@ -24,7 +24,11 @@ const Footer = () => {
             <ul className="space-y-2 text-sm sm:text-base text-primary-foreground/80">
               <li className="flex items-center gap-2 justify-center sm:justify-start">
                 <FileText className="w-3 h-3 sm:w-4 sm:h-4" />
-                MOD (Mortgage) Documentation
+                MOD Documentation
+              </li>
+              <li className="flex items-center gap-2 justify-center sm:justify-start">
+                <FileText className="w-3 h-3 sm:w-4 sm:h-4" />
+                MOD (Cancel) Documentation
               </li>
               <li className="flex items-center gap-2 justify-center sm:justify-start">
                 <FileText className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -43,11 +47,11 @@ const Footer = () => {
             <div className="space-y-2 text-sm sm:text-base text-primary-foreground/80">
               <div className="flex items-center gap-2 justify-center sm:justify-start">
                 <Phone className="w-3 h-3 sm:w-4 sm:h-4" />
-                <span>+91 98765 43210</span>
+                <span>+91 9790272078</span>
               </div>
               <div className="flex items-start gap-2 justify-center sm:justify-start">
                 <MapPin className="w-3 h-3 sm:w-4 sm:h-4 mt-0.5" />
-                <span>123 Main Road, Example City, Tamil Nadu</span>
+                <span>Dr Moorthy Road, Kumbakonam, Tamil Nadu</span>
               </div>
             </div>
           </div>
