@@ -61,13 +61,13 @@ const Services = () => {
   ];
 
   const getColorClasses = (color) => {
-    // All sections use the same blue color scheme
+    // All sections use the same professional dark blue color scheme
     return {
-      bg: 'bg-blue-50',
-      text: 'text-blue-600',
-      border: 'border-blue-200',
-      hover: 'hover:bg-blue-100',
-      button: 'bg-blue-600 text-white hover:bg-blue-700'
+      bg: 'bg-primary-light',
+      text: 'text-primary',
+      border: 'border-primary/20',
+      hover: 'hover:bg-primary-light/50',
+      button: 'bg-primary text-white hover:bg-primary/90'
     };
   };
 
@@ -149,7 +149,7 @@ const Services = () => {
         {/* Header Section */}
         <div className="text-center mb-8 sm:mb-12 lg:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 lg:mb-6 px-2">
-            Document <span className="bg-gradient-to-r from-blue-600 to-blue-600 bg-clip-text text-transparent">Services</span>
+            Document <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Services</span>
           </h2>
           <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4 sm:px-6 leading-relaxed">
             Select a service to view required documents. You can scan or upload documents directly for each requirement.
