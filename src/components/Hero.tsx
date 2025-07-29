@@ -38,6 +38,10 @@ const Hero = () => {
                 <span className="text-xs sm:text-sm font-medium text-primary">MOD & MOD(Cancel) Services</span>
               </div>
               <div className="flex items-center gap-1 sm:gap-2 bg-secondary-light px-3 sm:px-4 py-2 rounded-full">
+                <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                <span className="text-xs sm:text-sm font-medium text-secondary">Sales & Settlement</span>
+              </div>
+              <div className="flex items-center gap-1 sm:gap-2 bg-secondary-light px-3 sm:px-4 py-2 rounded-full">
                 <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-secondary" />
                 <span className="text-xs sm:text-sm font-medium text-secondary">Quick Processing</span>
               </div>
