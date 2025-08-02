@@ -74,11 +74,20 @@
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: hsl(var(--border));
   }
 
-  body {
-    @apply bg-background text-foreground;
+  html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+
+  #root {
+    width: 100%;
+    min-height: 100vh;
   }
 }
 
@@ -90,5 +99,11 @@
 
   .secondary-light {
     background-color: hsl(217 91% 95%);
+  }
+
+  /* Full width utility */
+  .full-width {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
   }
 }
