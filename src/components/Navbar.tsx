@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Building2, Menu, X, Phone } from "lucide-react";
+import { Building2, Menu, X, Phone, User } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, logout, isAuthenticated } = useAuth();
 
   const scrollToSection = (sectionId: string) => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
@@ -62,12 +64,34 @@ const Navbar = () => {
               Contact
             </button>
             <Button 
-              className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white"
-              onClick={() => window.location.href = 'tel:+919876543210'}
+              className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white mr-4"
+              onClick={() => window.location.href = 'tel:+919790272078'}
             >
               <Phone className="w-4 h-4 mr-2" />
               Call Now
             </Button>
+            
+            {/* User Status */}
+            {isAuthenticated ? (
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full">
+                  <User className="w-4 h-4 text-primary" />
+                  <span className="text-sm font-medium text-primary">{user?.username}</span>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={logout}
+                  className="text-xs"
+                >
+                  Logout
+                </Button>
+              </div>
+            ) : (
+              <div className="text-sm text-muted-foreground">
+                Login required for document actions
+              </div>
+            )}
           </div>
 
           {/* Mobile Menu */}
@@ -111,6 +135,32 @@ const Navbar = () => {
                   >
                     Get Started
                   </Button>
+                  
+                  {/* Mobile User Status */}
+                  {isAuthenticated ? (
+                    <div className="pt-2 border-t">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <User className="w-4 h-4 text-primary" />
+                          <span className="text-sm font-medium text-primary">{user?.username}</span>
+                        </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={logout}
+                          className="text-xs"
+                        >
+                          Logout
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="pt-2 border-t text-center">
+                      <p className="text-xs text-muted-foreground">
+                        Login required for document actions
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
